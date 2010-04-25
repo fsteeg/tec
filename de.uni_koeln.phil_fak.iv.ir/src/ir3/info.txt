@@ -1,0 +1,5 @@
+Zur Einrichtung in Eclipse:
+
+ - ZIP-File entpacken (ir3.zip), resultierenden Ordner (ir3) in den src-Folder eines Java-Projekts kopieren
+ - TestPraxis3 als JUnit-Test ausführen (Rechtsklick -> Run As... -> JUnit Test)
+ - [Bei Fehlern wg. JUnit: im Code in Zeile vom Fehler Ctrl-1, 'add JUnit4 to build path' o.ä.]

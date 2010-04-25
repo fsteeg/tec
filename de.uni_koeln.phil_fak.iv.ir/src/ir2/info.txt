@@ -1,0 +1,6 @@
+Zur Einrichtung in Eclipse:
+
+ - Nachtrag: Für korrekte Darstellung der Umlaute in Eclipse unter Einstellungen - General - Workspace das Encoding auf UTF-8 stellen
+ - Zunächst ir1.zip runterladen und einrichten (siehe info.txt dort)
+ - ZIP-File entpacken (z.B. ir2.zip), resultierenden Ordner (z.B. ir2) in den src-Folder des Projekts kopieren
+ - TestPraxis2 als JUnit-Test ausführen (Rechtsklick -> Run As... -> JUnit Test)

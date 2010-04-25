@@ -1,0 +1,7 @@
+Zur Einrichtung in Eclipse:
+
+ - ZIP-File entpacken (ir4.zip), resultierenden Ordner (ir4) in den src-Folder eines Java-Projekts kopieren
+ - TestPraxis4 als JUnit-Test ausführen (Rechtsklick -> Run As... -> JUnit Test)
+ - [Bei Fehlern wg. JUnit: im Code in Zeile vom Fehler Ctrl-1, 'Fix project setup', 'add JUnit4 to build path' o.ä.
+   oder junit.jar von junit.org runterladen, in das Projekt kopieren und Rechtsklick -> Add to build path]
+ - [Bei OutOfMemory: Runtime Configuration, Arguments, VM arguments: z.B. -Xmx512m angeben]

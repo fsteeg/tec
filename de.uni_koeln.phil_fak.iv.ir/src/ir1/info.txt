@@ -1,0 +1,6 @@
+Zur Einrichtung in Eclipse (in eckigen Klammern: nur beim ersten Mal nötig):
+
+ - [Java-Projekt anlegen, Shakespeare-Text vom Gutenberg-Projekt in Eclipse-Projekt kopieren (shaks12.txt)]
+ - ZIP-File entpacken (z.B. ir1.zip), resultierenden Ordner (z.B. ir1) in den src-Folder des Projekts kopieren
+ - [Bei den Fehlern wg. JUnit: im Code in Zeile vom Fehler Ctrl-1, add JUnit4 to build path]
+ - TestPraxis1 als JUnit-Test ausführen (Rechtsklick -> Run As... -> JUnit Test)

@@ -1,0 +1,28 @@
+digraph hierarchy {
+  node[shape=record width=1.5]/*style=filled,fillcolor=grey95*/
+  edge[]
+  
+  ClassifierStrategy[label = "{ClassifierStrategy\n\<\<Interface\>\>||...}"]
+  NaiveBayes[label = "{NaiveBayes|...|...}"]
+  TextClassifier[label = "{TextClassifier|...|...}"]
+  
+  Ibk[label = "{Ibk|...|...}"]
+  SMO[label = "{SMO|...|...}"]
+  
+  WekaAdapter[label = "{WekaAdapter|...|...}"]
+  
+  
+  TextClassifier -> ClassifierStrategy[arrowtail="diamond" arrowhead="none"]
+  ClassifierStrategy -> NaiveBayes[dir=back arrowtail=open]
+  
+  ClassifierStrategy -> WekaAdapter[dir=back arrowtail=open]
+  Classifier -> WekaAdapter [arrowhead="diamond" arrowtail="none" constraint=true]
+  
+  subgraph cluster_0{
+  	  label="Weka"
+	  Classifier[label = "{weka.classifiers.Classifier\n\<\<Interface\>\>|...|...}"]
+	  Classifier -> Ibk[dir=back arrowtail=open]
+	  Classifier -> SMO[dir=back arrowtail=open]
+  }
+  
+}

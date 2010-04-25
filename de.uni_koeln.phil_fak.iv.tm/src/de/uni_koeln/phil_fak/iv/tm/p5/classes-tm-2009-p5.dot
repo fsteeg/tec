@@ -1,0 +1,12 @@
+digraph hierarchy {
+  node[shape=record width=1.5]/*style=filled,fillcolor=grey95*/
+  edge[]
+  
+  ClusterAnalysis[label = "{ClusterAnalysis|...|analyse(...) : List\<Cluster\>}"]
+  Cluster[label = "{Cluster|...|getDocuments() : List\<Document\>}"]
+  Document[label = "{Document|...|...}"]
+  
+  
+  ClusterAnalysis -> Cluster[arrowtail="diamond" arrowhead="none" constraint=false]
+  Cluster -> Document[arrowtail="diamond" arrowhead="none" constraint=false]
+}

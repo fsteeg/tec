@@ -1,0 +1,12 @@
+digraph hierarchy {
+  node[shape=record]/*style=filled,fillcolor=grey95*/
+  edge[]
+  
+  ClassifierStrategy[label = "{ClassifierStrategy\n\<\<Interface\>\>||...}"]
+  NaiveBayes[label = "{NaiveBayes|...|...}"]
+  TextClassifier[label = "{TextClassifier|...|...}"]
+  
+  ClassifierStrategy -> NaiveBayes [dir=back arrowtail=open label="impl."]
+  ClassifierStrategy -> TextClassifier [arrowhead="diamond"]
+  
+}

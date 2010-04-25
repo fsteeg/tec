@@ -1,0 +1,9 @@
+Zur Einrichtung in Eclipse:
+
+ - ZIP-File entpacken (ir6.zip), resultierenden Ordner (ir6) in den src-Folder eines Java-Projekts kopieren
+ - [Bei Fehlern wg. JUnit: im Code in Zeile vom Fehler Ctrl-1, 'Fix project setup', 'add JUnit4 to build path' o.ä.
+   oder junit.jar von junit.org runterladen, in das Projekt kopieren und Rechtsklick -> Add to build path]
+ - Alle Jar-Dateien im Lib-Ordner markieren, Rechtsklick -> Add to build path
+ - TestPraxis6 als JUnit-Test ausführen (Rechtsklick -> Run As... -> JUnit Test)
+ - Bei "java.lang.UnsupportedClassVersionError: Bad version number in .class file": Sicherstellen dass der 
+   Test mit Java 6 ausgeführt wurde (Run Configuration beim Play-Knopf, JRE-Tab)

@@ -1,0 +1,22 @@
+digraph hierarchy {
+  node[shape=record]/*style=filled,fillcolor=grey95*/
+  edge[dir=back, arrowtail=empty]
+  
+  Corpus[label = "{Corpus\n\<\<Interface\>\>||}"]
+//  IndexedDocument[label = "{IndexedDocument||}"]
+//  IndexedCorpus[label = "{IndexedCorpus||}"]
+  CorpusDatabase[label = "{CorpusDatabase||}"]
+  
+  Document[label = "{Document\n\<\<Interface\>\>||}"]
+  WebDocument[label = "{WebDocument||}"]
+ 
+//  Corpus->IndexedCorpus[arrowtail=empty]
+  Corpus->CorpusDatabase[arrowtail=empty]
+  
+//  CorpusDatabase->IndexedCorpus[constraint=false, arrowtail=odiamond]
+  Corpus->Document[constraint=false, arrowtail=odiamond]
+  
+//  WebDocument->IndexedDocument[constraint=false, arrowtail=odiamond]
+  Document->WebDocument[arrowtail=empty]
+//  Document->IndexedDocument[arrowtail=empty]
+}

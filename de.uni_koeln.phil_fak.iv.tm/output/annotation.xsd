@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="annotation" type="annotation"/>
+
+  <xs:complexType name="annotation" final="extension restriction">
+    <xs:sequence>
+      <xs:element name="value" type="xs:anyType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="location" type="xs:anyURI"/>
+    <xs:attribute name="end" type="xs:int"/>
+    <xs:attribute name="start" type="xs:int"/>
+  </xs:complexType>
+</xs:schema>
+
