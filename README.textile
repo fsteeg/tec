@@ -1,1 +1,35 @@
-Code for Text Engineering courses, University of Cologne
+_Code for Text Engineering courses, University of Cologne_
+
+h2. Information Retrieval
+
+"Course plan and material":http://www.spinfo.phil-fak.uni-koeln.de/spinfo-informationretrieval.html (in German)
+
+h2. Text Mining
+
+"Course plan and material":http://www.spinfo.phil-fak.uni-koeln.de/spinfo-textmining.html (in German)
+
+table(#tableborders){ border: 2px solid #ccc; border-collapse: collapse; border-spacing: 0; width:100%;}.
+| | *Functional* | *Technical* | *Uses* | *Literature* |
+| "tm1":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/tm/p1/ | Corpus and data access | OOD und TDD basics; object DB und native queries | "DB4O":http://www.db4o.com/; Crawler ("ir6":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/ir/p6/crawler/) | Gamma et al. (1994), Kap. 1; Bloch (2008), Item 16 |
+| "tm2":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/tm/p2/ | Data enrichment with standoff annotation | Generics; XML binding for export und import; Schema generation as a form of MDD (code-first) | Index ("ir2":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/ir/p2/index/); TF-IDF ("ir5":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/ir/p5/features/); "JAXB":http://en.wikipedia.org/wiki/Java_Architecture_for_XML_Binding (or Java 6) | Thompson & McKelvie (1997); Bloch (2008), Ch. 5; Naftalin & Wadler (2006) Part 1 |
+| "tm3":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/tm/p3/ | Text classification with naive bayes | Delegation and strategy for modular classification | Crawler ("ir6":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/ir/p6/crawler/) | Gamma et al. (1994), S. 315; Bloch (2008), Item 21 |
+| "tm4":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/tm/p4/ | Comparative text classification and evaluation | Using the Weka-API, adapter for integration | "Weka":http://www.cs.waikato.ac.nz/ml/weka/ (developer version) | Gamma et al. (1994), S. 139; Witten & Frank (2005) |
+| "tm5":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/tm/p5/ | Flat k-means clustering and purity evaluation | Java Concurrency API (CopyOnWriteArrayList, ExecutorService), visualization with Graphviz DOT | TF-IDF vectors and cosine similarity ("ir5":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/src/de/uni_koeln/phil_fak/iv/ir/p5/features/) | Bloch (2008), Item 68 |
+| "tm6":http://github.com/fsteeg/tec/tree/master/de.uni_koeln.phil_fak.iv.tm/ | Release engineering | CRISP builds with Ant | All previous code | Clark (2006), Kap. 2 |
+
+h3. Instructions
+
+* Files runnable as Java application and JUnit test for each session can be found in package de.uni_koeln.phil_fak.iv.tm.pX.PraxisX.java (X for the session number)
+* To run all tests: run All.java as JUnit test (needs corpora in data/, run All.java as Java application to generate)
+* The Ant script can compile and deploy the code as an executable Jar (ant deploy), generate Javadoc (ant doc) and run tests (ant test), which are summarized in an HTML report (ant report)
+
+h3. Literature
+
+* Bloch, Joshua (2008), _Effective Java, Second Edition_, Addison-Wesley.
+* Clark, Mike (2006), _Projekt-Automatisierung_, Hanser.
+* Gamma, Erich, Helm, Richard, Johnson, Ralph and John Vlissides (1995), _Design Patterns. Elements of Reusable Object-Oriented Software_, Addison-Wesley.
+* Naftalin, Maurice and Philip Wadler (2006), _Java Generics and Collections_, O'Reilly.
+* Thompson, H. S. and McKelvie, D. (1997), Hyperlink semantics for standoff markup of read-only documents. In _Proceedings of SGML Europe ’97: The next decade – Pushing the Envelope_, page 227–229.
+* Ian H. Witten & Eibe Frank (2005), _Data Mining: Practical Machine Learning Tools and Techniques_ (Second Edition), Morgan Kaufmann.
+
+<style type="text/css"> #tableborders td {border: 1px solid #ccc;  padding: .1em .25em;} </style>
