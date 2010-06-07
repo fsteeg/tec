@@ -53,7 +53,7 @@ import de.uni_koeln.phil_fak.iv.tm.p2.annotation.Annotation;
  * @author Fabian Steeg (fsteeg)
  */
 public class Praxis2 {
-    private static final String DATA = "data/corpus-tm-2.db";
+    private static final String DATA = "output/corpus-tm-2.db";
     private Corpus corpus;
     private Document document;
 

@@ -38,7 +38,7 @@ import de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document;
  */
 class CrawlerRunnable implements Runnable {
 
-    private static final int CRAWL_DELAY_MS = 10;
+    private static final int CRAWL_DELAY_MS = 100;
     private List<Document> docs;
     private int depth;
     private String url;
