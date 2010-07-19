@@ -48,7 +48,7 @@ import de.uni_koeln.phil_fak.iv.tm.p5.clustering.ClusterAnalysis;
  * @author Fabian Steeg (fsteeg)
  */
 public class Praxis5 {
-    private static final String DATA = "data/corpus-tm-5.db";
+    private static final String DATA = "output/corpus-tm-5.db";
     private Corpus corpus;
     private List<Document> documents;
     private ClusterAnalysis analysis;
@@ -67,7 +67,7 @@ public class Praxis5 {
     public void before() {
         /* Hier (vor jedem Test) nur öffnen. */
         corpus = CorpusDatabase.open(DATA);
-        documents = corpus.getDocumentsForSource("spiegel");
+        documents = corpus.getDocumentsForSource("spiegel.de");
         System.out.println(String.format("Clustering %s documents, %s iterations",
                 documents.size(), ITERATIONS));
         /* Hier erzeigen wir unsere Cluster-Analyse */

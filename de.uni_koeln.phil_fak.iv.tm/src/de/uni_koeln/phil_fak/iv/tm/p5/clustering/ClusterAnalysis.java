@@ -173,7 +173,7 @@ public final class ClusterAnalysis {
          * fürs Debuggen. In Produktionacode würde man so einen Wert z.B. in
          * eine Properties-Datei aulagern.
          */
-        ExecutorService exec = Executors.newFixedThreadPool(1); // threads
+        ExecutorService exec = Executors.newFixedThreadPool(clusterEnd - clusterStart); // threads
         for (int i = clusterStart; i <= clusterEnd; i++) {
             final int k = i;
             exec.execute(new Runnable() {
