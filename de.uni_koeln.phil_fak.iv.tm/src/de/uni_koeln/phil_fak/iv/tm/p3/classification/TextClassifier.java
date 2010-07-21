@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document;
 
@@ -40,12 +41,12 @@ public final class TextClassifier {
      * @param trainingSet The training set for this classifier
      */
     public TextClassifier(final ClassifierStrategy classifier,
-            final List<Document> trainingSet) {
+            final Set<Document> trainingSet) {
         this.classifier = classifier;
         train(trainingSet);
     }
 
-    private void train(final List<Document> trainingDocuments) {
+    private void train(final Set<Document> trainingDocuments) {
         /* Wir trainieren mit jedem Dokument: */
         for (Document document : trainingDocuments) {
             /* Delegieren das eigentliche Training an unsere Strategie: */
@@ -57,7 +58,7 @@ public final class TextClassifier {
      * @param documents The documents to classify
      * @return A mapping of documents to their class labels
      */
-    public Map<Document, String> classify(final List<Document> documents) {
+    public Map<Document, String> classify(final Set<Document> documents) {
         Map<Document, String> resultClasses = new HashMap<Document, String>();
         for (Document document : documents) {
             /* Wie beim Training delegieren wir an die Strategie: */

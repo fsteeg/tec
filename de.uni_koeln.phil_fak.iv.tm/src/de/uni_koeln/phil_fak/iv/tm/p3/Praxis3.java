@@ -20,8 +20,10 @@
 package de.uni_koeln.phil_fak.iv.tm.p3;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -50,8 +52,8 @@ import de.uni_koeln.phil_fak.iv.tm.p3.classification.TextClassifier;
 public class Praxis3 {
     private static final String DATA = "data/corpus-tm-3.db";
     private Corpus corpus;
-    private List<Document> testingSet;
-    private List<Document> trainingSet;
+    private Set<Document> testingSet;
+    private Set<Document> trainingSet;
     private ArrayList<Document> goldSet;
     private TextClassifier textClassifier;
 
@@ -81,8 +83,8 @@ public class Praxis3 {
          * sinnvolle Ergebnisse zu bekommen)
          */
         String query = "bild";
-        trainingSet = corpus.getDocumentsForSource(query);
-        testingSet = corpus.getDocumentsForSource(query);
+        trainingSet = new HashSet<Document>(corpus.getDocumentsForSource(query));
+        testingSet = new HashSet<Document>(corpus.getDocumentsForSource(query));
         testEval(query);
 
     }
@@ -90,8 +92,8 @@ public class Praxis3 {
     @Test
     public void spiegel() {
         String query = "spiegel";
-        trainingSet = corpus.getDocumentsForSource(query);
-        testingSet = corpus.getDocumentsForSource(query);
+        trainingSet = new HashSet<Document>(corpus.getDocumentsForSource(query));
+        testingSet = new HashSet<Document>(corpus.getDocumentsForSource(query));
         testEval(query);
 
     }

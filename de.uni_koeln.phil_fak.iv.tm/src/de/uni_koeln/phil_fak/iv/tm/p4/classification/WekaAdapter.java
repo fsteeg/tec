@@ -29,6 +29,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
+import de.uni_koeln.phil_fak.iv.ir.p5.features.FeatureVector;
 import de.uni_koeln.phil_fak.iv.tm.p1.corpus.Corpus;
 import de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document;
 import de.uni_koeln.phil_fak.iv.tm.p3.classification.ClassifierStrategy;
@@ -37,28 +38,79 @@ import de.uni_koeln.phil_fak.iv.tm.p3.classification.ClassifierStrategy;
  * Adapter for Weka classifiers.
  * @author Fabian Steeg (fsteeg)
  */
-public final class WekaAdapter implements ClassifierStrategy {
+public class WekaAdapter implements ClassifierStrategy {
 
     private Classifier wekaClassifier;
-    private int featureCount;
-    private Set<String> classes;
+    private int vectorSize;
+    private List<String> classes;
     private Instances trainingSet;
     private Corpus corpus;
+    private boolean classifierBuilt = false;
 
     /**
      * @param wekaClassifier The Weka classifier to adapt
      * @param trainingData The training documents
      * @param corpus The corpus
      */
-    public WekaAdapter(final Classifier wekaClassifier,
-            final List<Document> trainingData, final Corpus corpus) {
+    public WekaAdapter(Classifier wekaClassifier,
+            Set<Document> trainingData, Corpus corpus) {
         this.wekaClassifier = wekaClassifier;
         this.corpus = corpus;
-        this.featureCount = trainingData.get(0).getVector(corpus).getValues()
-                .size();
+        // Fuer Weka brauchen wir jetzt ein paar Sachen:
+        // 1. Die Groesse des Merkmalsvektors:
+        FeatureVector vector = trainingData.iterator().next().getVector(corpus);
+        this.vectorSize = vector.getValues().size();
+        // 2. Die moegliche Klassen:
         this.classes = collectClasses(trainingData);
-        this.trainingSet = initTrainingSet(trainingData);
-        train(trainingData);
+        // 3. Die Struktur der Trainingsdaten
+        this.trainingSet = initTraininSet(trainingData);
+    }
+    
+    private List<String> collectClasses(Set<Document> trainingData) {
+        Set<String> classes = new HashSet<String>();
+        for (Document document : trainingData) {
+            classes.add(document.getTopic());
+        }
+        return new ArrayList<String>(classes);
+    }
+
+    private Instances initTraininSet(Set<Document> trainingData) {
+        /* Der FastVector enthält die Merkmale: */
+        FastVector structureVector = new FastVector(vectorSize + 1);
+        /* Die Klasse wird in Weka auch als Merkmalsvektor dargestellt: */
+        FastVector classesVector = new FastVector(this.classes.size());
+        for (String c : classes) {
+          /*
+           * Die Klasse ist nicht numerisch, deshalb muessen alle möglichen
+           * Werte angegeben werden:
+           */
+            classesVector.addElement(c);
+        }
+        /* An Stelle 0 unseres Gesamtvektors kommt der Klassen-Vektor: */
+        structureVector.addElement(new Attribute("Ressort", classesVector));
+        for (int i = 0; i < vectorSize; i++) {
+          /*
+           * An jeder Position unseres Merkmalsvektors haben wir ein
+           * numerisches Merkmal (repräsentiert als Attribute), dessen Name
+           * sein Index ist:
+           */
+            structureVector.addElement(new Attribute(i + "")); // Merkmal i,
+                                                               // d.h. was? >
+                                                               // TF-IDF
+        }
+        /*
+         * Schliesslich erstellen wir einen Container für unsere
+         * Trainingsbeispiele, der Instanzen der beschriebenen Merkmale
+         * enthalten wird:
+         */
+        Instances result = new Instances("InstanceStructure", structureVector,
+                vectorSize + 1);
+        /*
+         * Wobei wir noch angeben muessen, an welcher Stelle der
+         * Merkmalsvektoren die Klasse zu finden ist:
+         */
+        result.setClassIndex(0);
+        return result;
     }
 
     /**
@@ -66,132 +118,20 @@ public final class WekaAdapter implements ClassifierStrategy {
      * @see de.uni_koeln.phil_fak.iv.tm.p3.ClassifierStrategy#train(de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document,
      *      java.lang.String)
      */
-    public ClassifierStrategy train(final Document document,
-            final String classLabel) {
-        trainingSet.add(instanceFor(document, classLabel));
+    @Override public ClassifierStrategy train(Document document, String label) {
+        trainingSet.add(instance(document, label));
+        classifierBuilt = false;
         return this;
     }
-
-    /**
-     * {@inheritDoc}
-     * @see de.uni_koeln.phil_fak.iv.tm.p3.ClassifierStrategy#classify(de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document)
-     */
-    public String classify(final Document document) {
-        /* Eine unklassifizierte Instanz soll klassifiziert werden: */
-        Instance instance = instanceFor(document, null);
-        try {
-            /*
-             * Ein Array mit der Wahrscheinlichkeitsverteilung der Klassen,
-             * korrespondiert mit den möglichen Klassen des Klassifikators:
-             */
-            double[] distribution = wekaClassifier
-                    .distributionForInstance(instance);
-            /*
-             * D.h. die korrespondierende Klasse mit dem höchsten Wert ist die
-             * beste Klasse für die Merkmale:
-             */
-            int maxIndex = findMaxIndex(distribution);
-            return new ArrayList<String>(classes).get(maxIndex);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        /*
-         * toString on the Weka classifier is quite useful but not really
-         * concise in every case, so we use the name only here:
-         */
-        return String.format("Weka: %s", this.wekaClassifier.getClass()
-                .getSimpleName());
-    }
-
-    private Instances initTrainingSet(final List<Document> trainingData) {
-        /* Der FastVector enthält die Merkmale: */
-        FastVector instanceStructure = new FastVector(featureCount + 1);
-        /* Die Klasse wird in Weka auch als Merkmalsvektor dargestellt: */
-        FastVector possibleClasses = new FastVector(classes.size());
-        for (String className : classes) {
-            /*
-             * Die Klasse ist nicht numerisch, deshalb muessen alle möglichen
-             * Werte angegeben werden:
-             */
-            possibleClasses.addElement(className);
-        }
-        /* An Stelle 0 unseres Gesamtvektors kommt der Klassen-Vektor: */
-        instanceStructure.addElement(new Attribute("Ressort", possibleClasses));
-        for (int i = 0; i < featureCount; i++) {
-            /*
-             * An jeder Position unseres Merkmalsvektors haben wir ein
-             * numerisches Merkmal (repräsentiert als Attribute), dessen Name
-             * sein Index ist:
-             */
-            instanceStructure.addElement(new Attribute(i + ""));
-        }
-        /*
-         * Schliesslich erstellen wir einen Container für unsere
-         * Trainingsbeispiele, der Instanzen der beschriebenen Merkmale
-         * enthalten wird:
-         */
-        Instances result = new Instances("InstanceStructure",
-                instanceStructure, 1);
-        /*
-         * Wobei wir noch angeben muessen, an welcher Stelle der
-         * Merkmalsvektoren die Klasse zu finden ist:
-         */
-        /*
-         * Diese Zeile fehlte im Seminar, deshalb lief es nicht.
-         */
-        result.setClassIndex(0);
-        return result;
-    }
-
-    private void train(final List<Document> trainingData) {
-        for (Document document : trainingData) {
-            train(document, document.getTopic());
-        }
-        try {
-            wekaClassifier.buildClassifier(trainingSet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Set<String> collectClasses(final List<Document> trainingData) {
-        Set<String> classes = new HashSet<String>();
-        for (Document document : trainingData) {
-            classes.add(document.getTopic());
-        }
-        return classes;
-    }
-
-    private int findMaxIndex(final double[] distribution) {
-        int maxIndex = -1;
-        double max = Double.MIN_VALUE;
-        for (int j = 0; j < distribution.length; j++) {
-            double current = distribution[j];
-            if (current > max) {
-                max = current;
-                maxIndex = j;
-            }
-        }
-        return maxIndex;
-    }
-
-    private Instance instanceFor(final Document document,
-            final String classLabel) {
+    
+    private Instance instance(Document document, String label) {
+        List<Float> values = document.getVector(corpus).getValues();
         /* Die Instanz enthält alle Merkmale plus die Klasse: */
-        Instance instance = new Instance(featureCount + 1);
-        List<Float> features = document.getVector(corpus).getValues();
-        for (int i = 0; i < featureCount; i++) {
-            instance.setValue(i + 1, features.get(i));
+        double[] vals = new double[values.size() + 1];
+        for (int i = 0; i < values.size(); i++) {
+            vals[i + 1] = values.get(i);
         }
+        Instance instance = new Instance(1, vals);
         /*
          * Und muss erfahren, was die Werte bedeuten, was wir für unser
          * Trainingsset beschrieben hatten:
@@ -201,12 +141,41 @@ public final class WekaAdapter implements ClassifierStrategy {
          * Beim Training haben wir Instanzen mit vorhandenem Klassenlabel, bei
          * der Klassifikation ist die Klasse unbekannt:
          */
-        if (classLabel == null) {// during classification
-            instance.setClassMissing();
-        } else { // during training
-            instance.setClassValue(classLabel);
-        }
+        if (label == null) {
+            instance.setClassMissing(); // during classification
+        } else
+            instance.setClassValue(label); // during training
         return instance;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see de.uni_koeln.phil_fak.iv.tm.p3.ClassifierStrategy#classify(de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document)
+     */
+    @Override public String classify(Document document) {
+        if (!classifierBuilt) {
+            try {
+                wekaClassifier.buildClassifier(trainingSet);
+                classifierBuilt = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            Instance instance = instance(document, null);
+            int i = (int) wekaClassifier.classifyInstance(instance);
+            // double[] distribution =
+            // wekaClassifier.distributionForInstance(instance); < Alternative
+            return classes.get(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String toString() {
+        return String.format("%s for %s", getClass().getSimpleName(),
+                wekaClassifier.getClass().getSimpleName());
     }
 
 }

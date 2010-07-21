@@ -20,8 +20,10 @@
 package de.uni_koeln.phil_fak.iv.tm.p4;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -56,8 +58,8 @@ public class Praxis4 {
     private static final String LINE = "------------------------------------------------------------------------";
     private static final String DATA = "output/corpus-tm-4.db";
     private Corpus corpus;
-    private List<Document> testingSet;
-    private List<Document> trainingSet;
+    private Set<Document> testingSet;
+    private Set<Document> trainingSet;
     private ArrayList<Document> goldSet;
     private TextClassifier textClassifier;
 
@@ -122,7 +124,7 @@ public class Praxis4 {
          * müssten wir uns darum kümmern die Klassen aufeinander zu mappen um
          * sinnvolle Ergebnisse zu bekommen)
          */
-        trainingSet = corpus.getDocumentsForSource(query);
+        trainingSet = new HashSet<Document>(corpus.getDocumentsForSource(query));
         testingSet = trainingSet;
         goldSet = new ArrayList<Document>(testingSet);
     }
