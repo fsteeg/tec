@@ -33,22 +33,22 @@ import de.uni_koeln.phil_fak.iv.tm.p1.corpus.Document;
  */
 public final class Cluster implements Iterable<Document> {
     List<Document> documents = new CopyOnWriteArrayList<Document>();
-    private Document menoid = null;
+    private Document medoid = null;
     private Corpus corpus;
 
     public Cluster(final Corpus corpus, final Document document) {
         this.corpus = corpus;
-        this.menoid = document;
+        this.medoid = document;
         this.documents.add(document);
     }
 
     /**
-     * @return The menoid of this cluster, i.e. the document with the highest
+     * @return The medoid of this cluster, i.e. the document with the highest
      *         similarity to the other documents, the most central member of the
      *         cluster in the vector space
      */
-    public Document getMenoid() {
-        return menoid;
+    public Document getMedoid() {
+        return medoid;
     }
 
     /*
@@ -70,10 +70,10 @@ public final class Cluster implements Iterable<Document> {
      */
     public String getLabel() {
         /*
-         * Eine einfache Heuristik: Das Label ist das topic des Menoids, auf
+         * Eine einfache Heuristik: Das Label ist das topic des Medoids, auf
          * ungefähr gleiche Länge getrimmt:
          */
-        String label = menoid.getTopic();
+        String label = medoid.getTopic();
         label = label.substring(0, Math.min(8, label.length()));
         return label.toUpperCase();
     }
@@ -95,9 +95,9 @@ public final class Cluster implements Iterable<Document> {
      */
 
     /**
-     * Recompute the menoid of this cluster based on its members
+     * Recompute the medoid of this cluster based on its members
      */
-    void recomputeMenoid() {
+    void recomputeMedoid() {
         /*
          * Der Schwerpunkt eines Clusters: Das Element mit der geringsten
          * durchschnittlichen Entfernung, d.h. der größten Ähnlichkeit, zu allen
@@ -136,7 +136,7 @@ public final class Cluster implements Iterable<Document> {
              * Seminar das kleine Wörtchen "return", so dass trotz Ergebnis
              * immer null zurückgegeben wurde, ansonsten war es soweit komplett.
              */
-            this.menoid = documents.get(maxIndex);
+            this.medoid = documents.get(maxIndex);
         } else {
             throw new IllegalStateException("No max found!");
         }

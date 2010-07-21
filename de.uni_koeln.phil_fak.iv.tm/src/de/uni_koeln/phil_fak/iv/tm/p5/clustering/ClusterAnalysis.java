@@ -83,7 +83,7 @@ public final class ClusterAnalysis {
              * Ich bin hier dem Vorschlag aus dem Seminar gefolgt und habe für
              * einen Cluster eine eigene Klasse angelegt. Das hat neben der
              * Tatsache dass keine korrespondierenden Listen verwaltet werden
-             * auch andere Vorteile, etwa können wir die Menoid-Berechnung und
+             * auch andere Vorteile, etwa können wir die Medoid-Berechnung und
              * das Labeln in die Klasse verlegen.
              */
             Cluster cluster = new Cluster(corpus, documents.get(i));
@@ -119,7 +119,7 @@ public final class ClusterAnalysis {
                 int bestIndex = -1;
                 /* Ähnlichsten Mittelpunkt suchen: */
                 for (int i = 0; i < clusters.size(); i++) {
-                    Document center = clusters.get(i).getMenoid();
+                    Document center = clusters.get(i).getMedoid();
                     Float similarity =
                             document.getVector(corpus).similarity(center.getVector(corpus));
                     if (similarity > max) {
@@ -145,9 +145,9 @@ public final class ClusterAnalysis {
             }
             /*
              * Nach der Neuberechnung des aktuellen Clusters setzen wir seinen
-             * Menoid neu fest:
+             * Medoid neu fest:
              */
-            currentCluster.recomputeMenoid();
+            currentCluster.recomputeMedoid();
         }
         return result;
     }
@@ -252,7 +252,7 @@ public final class ClusterAnalysis {
         for (int i = 0; i < clusters.size(); i++) {
             Cluster cluster = clusters.get(i);
             builder.append(String.format("%s:%s|", cluster.documents.size(), clusters.get(i)
-                    .getMenoid().getTopic()));
+                    .getMedoid().getTopic()));
         }
         return builder.toString();
     }
@@ -273,8 +273,8 @@ public final class ClusterAnalysis {
             Cluster cluster = clusters.get(i);
             String label = cluster.getLabel();
             /* Dann schreiben wir für jeden Cluster einen Knoten raus... */
-            builder.append(String.format("\t%s[label = \"{%s|%s", label, label, cluster.documents
-                    .size()));
+            builder.append(String.format("\t%s[label = \"{%s|%s", cluster.hashCode(), label,
+                cluster.documents.size()));
             for (Document document : cluster) {
                 /*
                  * ...der in einem Kästchen jedes Dokument im Cluster

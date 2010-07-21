@@ -54,7 +54,7 @@ import de.uni_koeln.phil_fak.iv.tm.p4.classification.WekaAdapter;
  */
 public class Praxis4 {
     private static final String LINE = "------------------------------------------------------------------------";
-    private static final String DATA = "data/corpus-tm-4.db";
+    private static final String DATA = "output/corpus-tm-4.db";
     private Corpus corpus;
     private List<Document> testingSet;
     private List<Document> trainingSet;
